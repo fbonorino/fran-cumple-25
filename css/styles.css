@@ -134,6 +134,7 @@ body:not(.is-loading) .hero-name .ch { animation: drop .8s var(--ease-out) forwa
   text-shadow: 0 0 18px rgba(200, 255, 46, .55), 0 0 60px rgba(200, 255, 46, .35);
   animation: flicker 5s infinite; user-select: none; -webkit-tap-highlight-color: transparent;
   transition: transform .2s var(--ease-out);
+  touch-action: manipulation;
 }
 .hero-25:active { transform: scale(.94) rotate(-3deg); }
 @keyframes flicker {
