@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#0e0c12">
+  <title>Fran cumple 25</title>
+  <meta name="description" content="Cuarto de siglo. Previa, después Mata Club. Confirmá tu asistencia.">
+
+  <!-- Preview al compartir por WhatsApp. og:image tiene que ser URL ABSOLUTA (ver README) -->
+  <meta property="og:title" content="Fran cumple 25">
+  <meta property="og:description" content="Sábado 10/10 · Previa 23 hs · Confirmá acá.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://fran-cumple-25.netlify.app/">
+  <meta property="og:image" content="https://fran-cumple-25.netlify.app/img/og.jpg">
+
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎂</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Permanent+Marker&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="is-loading">
+
+  <div class="grain" aria-hidden="true"></div>
+  <canvas id="confetti" aria-hidden="true"></canvas>
+  <div id="toast" role="status" aria-live="polite"></div>
+  <div class="egg-badge" id="egg-badge" aria-live="polite"></div>
+
+  <!-- ============ LOADER ============ -->
+  <div id="loader">
+    <div class="loader-inner">
+      <p class="loader-pct"><span id="loader-num">0</span>%</p>
+      <div class="loader-bar"><i id="loader-fill"></i></div>
+      <p class="loader-msg" id="loader-msg">Cargando un cuarto de siglo…</p>
+      <button class="loader-skip" id="loader-skip" type="button">saltear</button>
+    </div>
+  </div>
+
+  <!-- ============ HERO ============ -->
+  <header class="hero">
+    <div class="hero-top">
+      <span>★ Invitación oficial ★</span>
+    </div>
+
+    <svg class="badge" viewBox="0 0 200 200" aria-hidden="true">
+      <defs><path id="circ" d="M100,100 m-76,0 a76,76 0 1,1 152,0 a76,76 0 1,1 -152,0"/></defs>
+      <circle cx="100" cy="100" r="99"/>
+      <g class="badge-spin">
+        <text><textPath href="#circ" textLength="470">25 AÑOS ★ 10/10 ★ 25 AÑOS ★ 10/10 ★</textPath></text>
+      </g>
+      <text class="badge-sub" x="100" y="112" text-anchor="middle">25 · 10/10</text>
+    </svg>
+
+    <h1 class="hero-title">
+      <span class="hero-name" id="hero-name" data-cfg="nombre"></span>
+      <span class="hero-row">
+        <span class="hero-cumple">cumple</span>
+        <button class="hero-25" id="hero-25" type="button" aria-label="25 años">25</button>
+      </span>
+    </h1>
+
+    <p class="hero-sub" id="hero-sub">Un cuarto de siglo. No redondea ni para bien ni para mal.</p>
+
+    <p class="hero-meta">
+      <span data-cfg="fechaTexto"></span>
+    </p>
+
+    <div class="countdown" id="countdown" aria-label="Cuenta regresiva">
+      <div><b id="cd-d">00</b><small>días</small></div>
+      <div><b id="cd-h">00</b><small>horas</small></div>
+      <div><b id="cd-m">00</b><small>min</small></div>
+      <div><b id="cd-s">00</b><small>seg</small></div>
+    </div>
+
+    <p class="hero-scroll">bajá que hay más ↓</p>
+  </header>
+
+  <div class="tape" aria-hidden="true"><div class="tape-track" id="tape-1"></div></div>
+
+  <!-- ============ FOTOS ============ -->
+  <section class="section fotos" id="fotos">
+    <div class="section-head">
+      <p class="kicker">Expediente N° 0025</p>
+      <h2>25 años de <em>evidencia</em></h2>
+      <p class="lead">Material que quedó documentado antes de que existiera el modo avión. <span id="vivo"></span></p>
+    </div>
+
+    <div class="edadometro" id="edadometro">
+      <span class="edad-label">EDAD</span>
+      <b id="edad-num">00</b>
+      <span class="edad-bar"><i id="edad-fill"></i></span>
+    </div>
+
+    <div class="polaroids" id="polaroids"></div>
+  </section>
+
+  <!-- ============ VELITAS ============ -->
+  <section class="section velas-sec" id="velitas">
+    <div class="section-head">
+      <p class="kicker">Prueba de resistencia</p>
+      <h2>Soplá las <em>velitas</em></h2>
+      <p class="lead">Son 25. Tocá o pasá el dedo por arriba. Nada del otro mundo.</p>
+    </div>
+    <div class="cake" id="cake">
+      <div class="velas" id="velas"></div>
+      <div class="cake-body" aria-hidden="true"><span>FELIZ CUMPLE <span data-cfg="nombre"></span></span></div>
+    </div>
+    <p class="velas-status" id="velas-status" aria-live="polite">Apagadas: 0/25</p>
+    <button class="btn btn-ghost" id="velas-reset" type="button" hidden>Prenderlas de nuevo</button>
+  </section>
+
+  <div class="tape tape-pink" aria-hidden="true"><div class="tape-track" id="tape-2"></div></div>
+
+  <!-- ============ INFO ============ -->
+  <section class="section info" id="info">
+    <div class="section-head">
+      <p class="kicker">Letra chica</p>
+      <h2>Lo <em>importante</em></h2>
+    </div>
+    <div class="cards">
+      <article class="card">
+        <h3>Cuándo</h3>
+        <p data-cfg="fechaTexto"></p>
+        <p class="muted">Cumplo el 6, pero festejamos el sábado 10/10.</p>
+      </article>
+      <article class="card">
+        <h3>Dónde</h3>
+        <p class="card-sub">Previa — cita <span data-cfg="previa.cita"></span></p>
+        <p><span data-cfg="previa.nombre"></span> — <span data-cfg="previa.direccion"></span></p>
+        <p class="card-links">
+          <a data-href="previa.maps" target="_blank" rel="noopener">Cómo llegar ↗</a>
+        </p>
+        <p class="card-sub" style="margin-top:10px">Después — <span data-cfg="after.hora"></span></p>
+        <p><span data-cfg="after.nombre"></span> — <span data-cfg="after.direccion"></span></p>
+        <p class="card-links">
+          <a data-href="after.instagram" target="_blank" rel="noopener">Instagram ↗</a>
+        </p>
+        <p class="muted" style="margin-top:6px">La cita es en la previa. A las <span data-cfg="after.hora"></span> nos vamos a Mata Club, no es opcional.</p>
+      </article>
+      <article class="card">
+        <h3>Qué llevar</h3>
+        <p>Nada. Solo ganas de tomar — el resto lo resolvemos ahí.</p>
+      </article>
+    </div>
+    <p class="lead info-extra">Regalo: tu presencia. Nada más, en serio.</p>
+  </section>
+
+  <!-- ============ RSVP ============ -->
+  <section class="section rsvp" id="rsvp">
+    <div class="section-head">
+      <p class="kicker">Momento de la verdad</p>
+      <h2>¿<em>Venís</em> o qué?</h2>
+    </div>
+
+    <div class="rsvp-box">
+      <p class="demo-flag" id="demo-flag" hidden>⚠️ MODO DEMO — falta conectar el Google Sheet (README, paso 2). No se guarda nada.</p>
+
+      <!-- Paso 1: sí / no -->
+      <div class="step is-active" data-step="choice">
+        <p class="step-q">Elegí con responsabilidad:</p>
+        <div class="arena" id="arena">
+          <button class="btn btn-acid btn-big" id="btn-si" type="button">SÍ, VOY</button>
+          <button class="btn btn-ghost" id="btn-no" type="button">No</button>
+        </div>
+      </div>
+
+      <!-- Paso 2: datos -->
+      <form class="step" data-step="datos" id="form-datos" novalidate>
+        <p class="step-count">Paso 1 de 2 — Tus datos</p>
+        <label>Género *
+          <select name="genero" required>
+            <option value="" disabled selected>Elegí una opción</option>
+            <option value="hombre">Hombre</option>
+            <option value="mujer">Mujer</option>
+          </select>
+        </label>
+        <label>Nombre y apellido *
+          <input name="nombre" type="text" autocomplete="name" required maxlength="80" placeholder="Como en el DNI, para que no haya lío en la puerta">
+        </label>
+        <label>Mensaje para el cumpleañero <span class="opt">(opcional)</span>
+          <textarea name="mensaje" rows="3" maxlength="500" placeholder="Algo copado, o directamente nada"></textarea>
+        </label>
+        <!-- honeypot anti-bots: los humanos no lo ven -->
+        <input class="hp" name="website" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <div class="step-actions">
+          <button class="btn btn-ghost" type="button" data-goto="choice">← Volver</button>
+          <button class="btn btn-acid" type="submit">Siguiente: la parte que duele →</button>
+        </div>
+      </form>
+
+      <!-- Paso 3: pago -->
+      <form class="step" data-step="pago" id="form-pago" novalidate>
+        <p class="step-count">Paso 2 de 2 — La parte que duele</p>
+        <p class="pay-lead">Transferí <span class="pay-precio" id="pago-precio"></span> a este alias y recién ahí confirmá:</p>
+
+        <div class="alias">
+          <div>
+            <small>ALIAS</small>
+            <b id="alias-text" data-cfg="pago.alias"></b>
+            <small>Titular: <span data-cfg="pago.titular"></span></small>
+          </div>
+          <button class="btn btn-pink" type="button" id="alias-copy">Copiar</button>
+        </div>
+
+        <label>¿A nombre de quién sale la transferencia? *
+          <input name="titular" type="text" required maxlength="80" placeholder="Para encontrarte en el home banking">
+        </label>
+
+        <label class="check">
+          <input name="transfirio" type="checkbox" required>
+          <span>Ya transferí.</span>
+        </label>
+
+        <p class="form-error" id="pago-error" hidden></p>
+        <div class="step-actions">
+          <button class="btn btn-ghost" type="button" data-goto="datos">← Volver</button>
+          <button class="btn btn-acid" type="submit" id="btn-confirmar">Confirmar asistencia</button>
+        </div>
+      </form>
+
+      <!-- Paso alternativo: no viene -->
+      <form class="step" data-step="no" id="form-no" novalidate>
+        <p class="step-count">Qué decepción.</p>
+        <label>Nombre y apellido *
+          <input name="nombre" type="text" autocomplete="name" required maxlength="80" placeholder="Para saber a quién dejar de saludar">
+        </label>
+        <label>Excusa *
+          <textarea name="excusa" rows="3" required maxlength="500" placeholder="'Tengo un compromiso' ya la usaron"></textarea>
+        </label>
+        <input class="hp" name="website" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <p class="form-error" id="no-error" hidden></p>
+        <div class="step-actions">
+          <button class="btn btn-acid" type="button" data-goto="choice">Me arrepentí, voy</button>
+          <button class="btn btn-ghost" type="submit" id="btn-no-enviar">Enviar excusa</button>
+        </div>
+      </form>
+
+      <!-- Éxito: ticket -->
+      <div class="step" data-step="ok">
+        <p class="ok-title">Adentro.</p>
+        <p class="ok-lead">Sacale captura a tu entrada.</p>
+        <div class="ticket" id="ticket">
+          <div class="ticket-main">
+            <small>ENTRADA OFICIAL · <span data-cfg="nombre"></span> cumple 25</small>
+            <b class="ticket-name" id="ticket-name">—</b>
+            <p><span data-cfg="fechaTexto"></span><br><span data-cfg="previa.nombre"></span> · <span data-cfg="previa.direccion"></span></p>
+            <p class="ticket-vale">VALE POR: un lugar en la previa y en Mata Club</p>
+          </div>
+          <div class="ticket-stub">
+            <span class="ticket-num" id="ticket-num">N° 0025-0000</span>
+            <span class="barcode" aria-hidden="true"></span>
+            <span class="ticket-admit">ADMIT ONE</span>
+          </div>
+        </div>
+        <p class="muted center">La entrada se valida cuando Fran vea la transferencia.</p>
+      </div>
+
+      <!-- Éxito: no viene -->
+      <div class="step" data-step="ok-no">
+        <p class="ok-title">Excusa recibida.</p>
+        <p class="ok-lead">Si cambiás de opinión, recargá la página y decí que sí.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>Hecho para el cuarto de siglo · <span data-cfg="nombre"></span>, edición 25</p>
+    <p class="muted">Psst: tocá el 25 de arriba, varias veces.</p>
+  </footer>
+
+  <script src="js/config.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
