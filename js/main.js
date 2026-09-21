@@ -11,7 +11,9 @@
   const store = {
     get(k) { try { return JSON.parse(localStorage.getItem(k)); } catch { return null; } },
     set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch { /* modo privado */ } },
+    del(k) { try { localStorage.removeItem(k); } catch { /* modo privado */ } },
   };
+  const DEBUG = new URLSearchParams(location.search).get("debug") === "1";
 
   /* ---------- volcar config en el HTML ---------- */
   const dig = (path) => path.split(".").reduce((o, k) => (o == null ? o : o[k]), C);
@@ -371,22 +373,33 @@
     return id;
   }
   function limpiarIdEnvio(formName) {
-    try { localStorage.removeItem("rsvp_id_" + formName); } catch { /* modo privado */ }
+    store.del("rsvp_id_" + formName);
+    store.del("rsvp_pending_" + formName);
   }
 
+  // Apps Script responde con un 302 a script.googleusercontent.com. En algunos
+  // navegadores móviles (Safari iOS viejo, el WebView interno de WhatsApp/
+  // Instagram) el fetch no puede leer esa respuesta cross-origin y tira una
+  // excepción, aunque el POST ya se haya procesado del lado del servidor (el
+  // dato ya quedó guardado). Por eso mandamos con mode:"no-cors": la promesa
+  // solo se rechaza ante una falla de red real, nunca por no poder leer la
+  // respuesta (que queda "opaca" y no se puede inspeccionar).
+  // Trade-off: como no podemos leer el body, tampoco vemos un ok:false real
+  // del backend (ej. "Falta el nombre") — por eso validamos todo en el front
+  // antes de enviar.
   async function enviar(payload) {
     if (!C.scriptUrl) { // modo demo
       console.info("[MODO DEMO] Se habría enviado:", payload);
       return wait(800);
     }
-    // text/plain evita el preflight de CORS, que Apps Script no soporta
-    const res = await fetch(C.scriptUrl, {
+    await fetch(C.scriptUrl, {
       method: "POST",
+      mode: "no-cors",
       headers: { "Content-Type": "text/plain;charset=utf-8" },
       body: JSON.stringify(payload),
     });
-    const out = await res.json();
-    if (!out.ok) throw new Error(out.error || "Error desconocido");
+    // Si llegamos hasta acá sin que el fetch tire, el request salió: no hay
+    // más información disponible (respuesta opaca por no-cors).
   }
 
   // Un reintento automático con backoff corto antes de rendirse y mostrar error
@@ -400,7 +413,7 @@
     }
   }
 
-  function showError(el, payload) {
+  function showError(el, payload, err) {
     el.hidden = false;
     el.textContent = "Uh, falló el envío de nuevo.";
     if (C.whatsapp) {
@@ -408,6 +421,12 @@
       el.innerHTML = `${el.textContent} Si sigue fallando, <a href="https://wa.me/${C.whatsapp}?text=${txt}" target="_blank" rel="noopener">mandame un WhatsApp con tu nombre</a>.`;
     } else {
       el.textContent += " Si sigue fallando, mandame un WhatsApp con tu nombre.";
+    }
+    if (DEBUG && err) {
+      const pre = document.createElement("pre");
+      pre.style.cssText = "white-space:pre-wrap;font-size:11px;opacity:.7;margin-top:6px";
+      pre.textContent = `[debug] ${err.name || "Error"}: ${err.message || err}`;
+      el.append(pre);
     }
   }
 
@@ -418,13 +437,16 @@
     btn.textContent = "Enviando…";
     errEl.hidden = true;
     payload.id = idEnvio(formName);
+    // Se guarda antes de mandar: si el navegador se cierra o se recarga en
+    // medio de un fallo de red, los datos tipeados no se pierden.
+    store.set("rsvp_pending_" + formName, payload);
     try {
       await enviarConReintento(payload);
       limpiarIdEnvio(formName);
       onOk();
     } catch (err) {
       console.error("RSVP: falló el envío (tras reintento):", err);
-      showError(errEl, payload);
+      showError(errEl, payload, err);
     } finally {
       btn.disabled = false;
       btn.textContent = label;

@@ -46,9 +46,16 @@ function doPost(e) {
       false, // lo tildás vos a mano cuando veas la transferencia
       clean(d.excusa, 500),
     ]);
-    // checkbox solo en la fila nueva (si se pre-cargan, appendRow escribe debajo de todos)
-    sheet.getRange(sheet.getLastRow(), 9).insertCheckboxes();
     if (dupKey) cache.put(dupKey, '1', 21600); // 6 hs, más que suficiente para cualquier reintento
+
+    // checkbox solo en la fila nueva (si se pre-cargan, appendRow escribe debajo de todos).
+    // Va en su propio try: si falla (pasa a veces por el tipo de columna), la
+    // fila ya quedó guardada y no queremos que eso se reporte como error.
+    try {
+      sheet.getRange(sheet.getLastRow(), 9).insertCheckboxes();
+    } catch (err) {
+      console.error('No se pudo insertar el checkbox de pago verificado: ' + err);
+    }
 
     if (NOTIFY_EMAIL) {
       MailApp.sendEmail(
