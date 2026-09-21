@@ -135,9 +135,8 @@
     finish();
   })();
 
-  /* ---------- cuenta regresiva + días vivo ---------- */
+  /* ---------- cuenta regresiva ---------- */
   const partyAt = new Date(C.fecha).getTime();
-  const bornAt = new Date(C.nacimiento).getTime();
   function tickClock() {
     const left = partyAt - Date.now();
     const cd = $("#countdown");
@@ -153,34 +152,29 @@
       $("#cd-m").textContent = pad(Math.floor(s / 60) % 60);
       $("#cd-s").textContent = pad(s % 60);
     }
-    if (!Number.isNaN(bornAt)) {
-      const dias = Math.floor((Date.now() - bornAt) / 86400e3);
-      $("#vivo").textContent = `Lleva ${dias.toLocaleString("es-AR")} días en este mundo, y esto es lo que hay para mostrar.`;
-    }
   }
   tickClock();
   setInterval(tickClock, 1000);
 
-  /* ---------- polaroids + edadómetro ---------- */
+  /* ---------- polaroids ---------- */
   const wrap = $("#polaroids");
   const emojis = ["👶", "🧒", "🧑", "🧑"];
   C.fotos.forEach((f, i) => {
     const fig = document.createElement("figure");
     fig.className = "polaroid reveal" + (f.ancho ? " is-wide" : "");
     fig.tabIndex = 0;
-    fig.dataset.edad = f.edadNum;
     fig.style.setProperty("--r", `${(i % 2 ? 1 : -1) * (2 + ((i * 37) % 4))}deg`);
 
-    const edadSticker = document.createElement("span");
-    edadSticker.className = "polaroid-edad";
-    edadSticker.textContent = f.edadLabel;
+    const sticker = document.createElement("span");
+    sticker.className = "polaroid-sticker";
+    sticker.textContent = f.sticker;
 
     const box = document.createElement("div");
     box.className = "polaroid-img";
     const img = new Image();
     img.loading = "lazy";
     img.decoding = "async";
-    img.alt = `${C.nombre} a los ${f.edadLabel.toLowerCase()}`;
+    img.alt = f.alt || "";
     img.onerror = () => {
       box.innerHTML = `<div class="polaroid-ph"><div><span>${emojis[i % emojis.length]}</span>Acá va tu foto:<br><code></code></div></div>`;
       $("code", box).textContent = f.src;
@@ -188,52 +182,18 @@
     img.src = f.src;
     box.append(img);
 
+    if (f.sello) {
+      const sello = document.createElement("span");
+      sello.className = "polaroid-sello";
+      sello.textContent = f.sello;
+      box.append(sello);
+    }
+
     const cap = document.createElement("figcaption");
     cap.textContent = f.texto;
-    fig.append(edadSticker, box, cap);
+    fig.append(sticker, box, cap);
     wrap.append(fig);
   });
-
-  // Último polaroid: evidencia destruida (cubre de los 9 a los 24)
-  (() => {
-    const fig = document.createElement("figure");
-    fig.className = "polaroid polaroid-censura reveal";
-    fig.tabIndex = 0;
-    fig.dataset.edad = 25;
-    fig.style.setProperty("--r", `${(C.fotos.length % 2 ? 1 : -1) * 3}deg`);
-
-    const edadSticker = document.createElement("span");
-    edadSticker.className = "polaroid-edad";
-    edadSticker.textContent = "25";
-
-    const box = document.createElement("div");
-    box.className = "polaroid-img";
-    box.innerHTML = `<div class="censura-text">EVIDENCIA DESTRUIDA<br>POR SEGURIDAD<br><small>9 a 24 años · archivo dado de baja</small></div>`;
-
-    const cap = document.createElement("figcaption");
-    cap.textContent = "Mejor para todos.";
-    fig.append(edadSticker, box, cap);
-    wrap.append(fig);
-  })();
-
-  const maxEdad = 25;
-  let edadShown = 0, edadAnim;
-  function setEdad(target) {
-    cancelAnimationFrame(edadAnim);
-    $("#edad-fill").style.width = (target / maxEdad) * 100 + "%";
-    const step = () => {
-      if (edadShown === target) return;
-      edadShown += Math.sign(target - edadShown);
-      $("#edad-num").textContent = pad(edadShown);
-      edadAnim = requestAnimationFrame(step);
-    };
-    step();
-  }
-  const edadIO = new IntersectionObserver(
-    (entries) => entries.forEach((e) => e.isIntersecting && setEdad(Math.round(+e.target.dataset.edad))),
-    { rootMargin: "-45% 0px -45% 0px" }
-  );
-  $$(".polaroid").forEach((p) => edadIO.observe(p));
 
   /* ---------- reveal on scroll ---------- */
   // (el form de RSVP queda afuera a propósito: nunca debe depender de una animación para verse)

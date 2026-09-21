@@ -4,13 +4,12 @@
 window.CONFIG = {
   nombre: "Fran",
 
-  // Fecha de nacimiento (para el contador de "días en este mundo")
-  nacimiento: "2001-10-06T00:00:00-03:00",
-
   // Fecha y hora de la previa (formato ISO, -03:00 = hora Argentina fija)
   fecha: "2026-10-10T23:00:00-03:00",
   // El mismo dato pero como lo leería un humano
   fechaTexto: "Sábado 10 de octubre · previa desde las 23 hs",
+  // Versión corta, solo para el hero (sin el horario de la previa)
+  fechaTextoHero: "Sábado 10 de octubre",
 
   previa: {
     nombre: "Directorio 252",
@@ -45,25 +44,23 @@ window.CONFIG = {
   // Si se deja vacío el formulario funciona en MODO DEMO (no guarda nada).
   scriptUrl: "https://script.google.com/macros/s/AKfycbyD8O7Se89MZn98D8UXrU01tE86Rt9sKk6t7Jr9eMbDDCJp8ix4KwtZmSXQuANY6LQR/exec",
 
-  // Tus fotos: están en /img/fotos, listadas acá en orden cronológico.
-  // edadNum = edad en años (puede ser fraccionaria) para el edadómetro.
-  // edadLabel = lo que se ve en el sticker de la polaroid.
+  // Tus fotos: están en /img/fotos. El chiste es uno solo, repetido: siempre
+  // tomó. No hay cronología marcada — sticker = el año de la foto nomás.
   // ancho: true = foto apaisada (4:3) en vez de vertical (3:4)
+  // sello: texto de un sello tipo "peritaje" sobre la foto (opcional, vacío/omitido = no se muestra)
   fotos: [
-    { src: "img/fotos/01.jpg", edadNum: 0.17, edadLabel: "2 MESES", ancho: true,
-      texto: "Ya dependiendo 100% de otra persona. En eso no cambié tanto." },
-    { src: "img/fotos/02.jpg", edadNum: 0.42, edadLabel: "5 MESES", ancho: true,
-      texto: "Transporte con chofer, sin quejas del pasajero." },
-    { src: "img/fotos/03.jpg", edadNum: 1, edadLabel: "1 AÑO",
-      texto: "Primeros pasos y ya con un accesorio en la boca." },
-    { src: "img/fotos/04.jpg", edadNum: 3, edadLabel: "3 AÑOS",
-      texto: "Reunión con un desconocido de barba blanca para pedirle cosas gratis." },
-    { src: "img/fotos/05.jpg", edadNum: 6, edadLabel: "6 AÑOS",
-      texto: "Ascendido a hermano mayor sin que nadie me preguntara." },
-    { src: "img/fotos/06.jpg", edadNum: 7, edadLabel: "7 AÑOS",
-      texto: "La seguridad de alguien que todavía no sabía nada." },
-    { src: "img/fotos/07.jpg", edadNum: 8, edadLabel: "8 AÑOS", ancho: true,
-      texto: "El resto del expediente, entre esta foto y hoy, quedó clasificado." },
+    { src: "img/fotos/01.webp", sticker: "2003", ancho: true, sello: "CONTENIDO NO ALTERADO",
+      alt: "Bebé con una botella de cerveza en la mano",
+      texto: "Todavía no caminaba y ya elegía marca." },
+    { src: "img/fotos/02.webp", sticker: "2003", ancho: false, sello: "CONTENIDO NO ALTERADO",
+      alt: "Bebé parado tomando de una mamadera",
+      texto: "Mamadera con espuma." },
+    { src: "img/fotos/03.webp", sticker: "2026", ancho: false,
+      alt: "Joven tomando agua de una botella",
+      texto: "Siempre cuidando la hidratación." },
+    { src: "img/fotos/04.webp", sticker: "2026", ancho: false,
+      alt: "Joven con una cerveza en la mano",
+      texto: "Ahora sí sabe leer la etiqueta." },
   ],
 
   // Intentos del botón "No" antes de rendirse (el último texto es cuando se rinde).

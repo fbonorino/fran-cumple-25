@@ -203,18 +203,7 @@ h2 em { font-style: normal; color: var(--acid); }
 .reveal { opacity: 0; transform: translateY(40px); transition: opacity .7s, transform .7s var(--ease-out); }
 .reveal.in { opacity: 1; transform: none; }
 
-/* ---------- edadómetro + polaroids ---------- */
-.edadometro {
-  position: sticky; top: 10px; z-index: 20; margin: 0 auto 28px; width: fit-content; max-width: 100%;
-  display: flex; align-items: center; gap: 10px; justify-content: center; white-space: nowrap;
-  background: rgba(14, 12, 18, .85); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-  border: 2px solid var(--acid); border-radius: 999px; padding: 6px 16px;
-  font-size: .68rem; letter-spacing: .08em; text-transform: uppercase;
-}
-.edadometro b { font-family: var(--display); font-weight: 400; font-size: 1.7rem; line-height: 1; color: var(--acid); min-width: 1.3em; text-align: center; font-variant-numeric: tabular-nums; }
-.edad-bar { width: clamp(36px, 12vw, 140px); height: 8px; border-radius: 9px; background: rgba(245, 238, 218, .15); overflow: hidden; }
-.edad-bar i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--acid), var(--pink)); transition: width .5s; }
-
+/* ---------- polaroids ---------- */
 .fotos { overflow-x: clip; }
 .polaroids { display: grid; align-items: start; grid-template-columns: 1fr; gap: clamp(36px, 8vw, 70px); justify-items: center; }
 .polaroid {
@@ -231,7 +220,7 @@ h2 em { font-style: normal; color: var(--acid); }
   background: rgba(200, 255, 46, .55); box-shadow: 0 1px 3px rgba(0, 0, 0, .2);
 }
 .polaroid:nth-child(even)::before { background: rgba(255, 63, 142, .55); }
-.polaroid-img { aspect-ratio: 3 / 4; background: #2a2630; overflow: hidden; }
+.polaroid-img { position: relative; aspect-ratio: 3 / 4; background: #2a2630; overflow: hidden; }
 .polaroid.is-wide { width: min(92%, 470px); }
 .polaroid.is-wide .polaroid-img { aspect-ratio: 4 / 3; }
 .polaroid-img img { width: 100%; height: 100%; object-fit: cover; filter: saturate(.9) contrast(1.05); }
@@ -242,20 +231,29 @@ h2 em { font-style: normal; color: var(--acid); }
 .polaroid-ph span { font-size: 3.2rem; display: block; }
 .polaroid-ph code { color: var(--acid); }
 .polaroid figcaption { font-family: var(--hand); font-size: 1.12rem; line-height: 1.25; padding: 14px 4px 0; min-height: 4.2em; }
-.polaroid-edad {
+.polaroid-sticker {
   position: absolute; top: -18px; right: -12px; min-width: 66px; height: 66px; padding: 0 6px; border-radius: 33px;
   display: grid; place-items: center; background: var(--acid); color: var(--dark);
   font-family: var(--display); font-size: .92rem; transform: rotate(14deg); border: 2px solid var(--dark); z-index: 2;
 }
 figure { margin: 0; }
 
-/* polaroid final "evidencia destruida" */
-.polaroid-censura .polaroid-img { background: repeating-linear-gradient(45deg, #2a2630 0 14px, #1c1a20 14px 28px); }
-.polaroid-censura .censura-text {
-  width: 100%; height: 100%; display: grid; place-items: center; text-align: center; padding: 20px;
-  font-family: var(--display); text-transform: uppercase; font-size: clamp(1.1rem, 4vw, 1.5rem); line-height: 1.15; color: var(--pink);
+/* sello tipo peritaje, solo en las fotos que lo definan */
+.polaroid-sello {
+  position: absolute; left: 10px; bottom: 10px; z-index: 2; max-width: 62%;
+  padding: 5px 9px; border: 2px solid var(--pink); border-radius: 4px;
+  background: rgba(14, 12, 18, .74); color: var(--pink);
+  font-family: var(--display); font-weight: 400; text-transform: uppercase;
+  font-size: .64rem; letter-spacing: .03em; line-height: 1.2; text-align: center;
+  opacity: 0; transform: rotate(-7deg) scale(1);
 }
-.polaroid-censura .censura-text small { display: block; font-family: var(--hand); color: var(--ink); text-transform: none; font-size: .95rem; margin-top: 10px; }
+.polaroid.in .polaroid-sello { animation: stamp-in .5s .45s cubic-bezier(.2, .8, .2, 1) both; }
+@keyframes stamp-in {
+  0% { opacity: 0; transform: rotate(-7deg) scale(2.4); }
+  55% { opacity: 1; transform: rotate(-7deg) scale(.9); }
+  80% { transform: rotate(-7deg) scale(1.08); }
+  100% { opacity: 1; transform: rotate(-7deg) scale(1); }
+}
 
 @media (min-width: 820px) {
   .polaroids { grid-template-columns: 1fr 1fr; column-gap: 40px; row-gap: 20px; }
@@ -265,9 +263,11 @@ figure { margin: 0; }
 
 /* ---------- velitas ---------- */
 .cake { max-width: 560px; margin-inline: auto; touch-action: pan-y; user-select: none; -webkit-user-select: none; }
-.velas { display: grid; grid-template-columns: repeat(10, 1fr); row-gap: 4px; padding: 0 4%; }
+/* wrap-reverse: la última fila (la incompleta) queda arriba y centrada;
+   las filas completas se apilan abajo, pegadas a la torta. */
+.velas { display: flex; flex-wrap: wrap-reverse; justify-content: center; row-gap: 4px; padding: 0 4%; }
 .vela {
-  position: relative; height: 66px; padding: 0; background: none; border: 0;
+  position: relative; flex: 0 0 10%; height: 66px; padding: 0; background: none; border: 0;
   display: flex; align-items: flex-end; justify-content: center; -webkit-tap-highlight-color: transparent;
 }
 .vela::after { /* el palito */
