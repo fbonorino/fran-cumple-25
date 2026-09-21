@@ -21,7 +21,7 @@ window.CONFIG = {
   after: {
     nombre: "Mata Club",
     direccion: "Av. Rivadavia 13636, Ramos Mejía",
-    hora: "2:30 AM",
+    hora: "2 AM",
     instagram: "https://www.instagram.com/mata_club/",
   },
 
@@ -68,7 +68,7 @@ window.CONFIG = {
 
   // Frases de las cintas marquee (sin precios).
   cintas: [
-    "ganas de tomar", "previa 23 hs", "Mata Club 2:30 AM", "cuarto de siglo",
+    "ganas de tomar", "previa 23 hs", "Mata Club 2 AM", "cuarto de siglo",
     "Directorio 252", "vení con ganas, no con excusas", "el 25 se banca en grupo",
   ],
 
