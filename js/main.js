@@ -358,6 +358,22 @@
   document.addEventListener("input", (e) => e.target.classList?.remove("invalid"));
   document.addEventListener("change", (e) => e.target.classList?.remove("invalid"));
 
+  // Id único por intento de envío (mismo id en reintentos automáticos y manuales,
+  // así el backend puede ignorar duplicados). Se guarda en localStorage para
+  // sobrevivir a un refresh accidental antes de que el envío se confirme.
+  function idEnvio(formName) {
+    const key = "rsvp_id_" + formName;
+    let id = store.get(key);
+    if (!id) {
+      id = (crypto.randomUUID?.() || `${Date.now()}-${Math.random().toString(36).slice(2)}`);
+      store.set(key, id);
+    }
+    return id;
+  }
+  function limpiarIdEnvio(formName) {
+    try { localStorage.removeItem("rsvp_id_" + formName); } catch { /* modo privado */ }
+  }
+
   async function enviar(payload) {
     if (!C.scriptUrl) { // modo demo
       console.info("[MODO DEMO] Se habría enviado:", payload);
@@ -373,26 +389,41 @@
     if (!out.ok) throw new Error(out.error || "Error desconocido");
   }
 
-  function showError(el, payload) {
-    el.hidden = false;
-    el.textContent = "Uh, falló el envío. Probá de nuevo";
-    if (C.whatsapp) {
-      const txt = encodeURIComponent(`Hola! Confirmo para el cumple: ${payload.nombre} (${payload.asiste === "SI" ? "voy" : "no puedo ir"})`);
-      el.innerHTML = `${el.textContent} o <a href="https://wa.me/${C.whatsapp}?text=${txt}" target="_blank" rel="noopener">avisale por WhatsApp</a>.`;
-    } else el.textContent += " en un ratito.";
+  // Un reintento automático con backoff corto antes de rendirse y mostrar error
+  async function enviarConReintento(payload) {
+    try {
+      await enviar(payload);
+    } catch (err) {
+      console.error("RSVP: primer intento de envío falló, reintentando…", err);
+      await wait(900 + Math.random() * 400);
+      await enviar(payload);
+    }
   }
 
-  async function submit(form, btn, errEl, payload, onOk) {
+  function showError(el, payload) {
+    el.hidden = false;
+    el.textContent = "Uh, falló el envío de nuevo.";
+    if (C.whatsapp) {
+      const txt = encodeURIComponent(`Hola! Confirmo para el cumple: ${payload.nombre} (${payload.asiste === "SI" ? "voy" : "no puedo ir"})`);
+      el.innerHTML = `${el.textContent} Si sigue fallando, <a href="https://wa.me/${C.whatsapp}?text=${txt}" target="_blank" rel="noopener">mandame un WhatsApp con tu nombre</a>.`;
+    } else {
+      el.textContent += " Si sigue fallando, mandame un WhatsApp con tu nombre.";
+    }
+  }
+
+  async function submit(form, btn, errEl, payload, onOk, formName) {
     if (!validate(form)) return;
     const label = btn.textContent;
     btn.disabled = true;
     btn.textContent = "Enviando…";
     errEl.hidden = true;
+    payload.id = idEnvio(formName);
     try {
-      await enviar(payload);
+      await enviarConReintento(payload);
+      limpiarIdEnvio(formName);
       onOk();
     } catch (err) {
-      console.error(err);
+      console.error("RSVP: falló el envío (tras reintento):", err);
       showError(errEl, payload);
     } finally {
       btn.disabled = false;
@@ -435,14 +466,14 @@
       confetti(220);
       setTimeout(() => confetti(140, innerWidth * 0.2, innerHeight * 0.5), 350);
       setTimeout(() => confetti(140, innerWidth * 0.8, innerHeight * 0.5), 650);
-    });
+    }, "si");
   });
 
   fNo.addEventListener("submit", (e) => {
     e.preventDefault();
     const n = new FormData(fNo);
     const payload = { asiste: "NO", nombre: n.get("nombre").trim(), excusa: n.get("excusa").trim(), website: n.get("website") };
-    submit(fNo, $("#btn-no-enviar"), $("#no-error"), payload, () => goto("ok-no"));
+    submit(fNo, $("#btn-no-enviar"), $("#no-error"), payload, () => goto("ok-no"), "no");
   });
 
   // Chistes escondidos del form

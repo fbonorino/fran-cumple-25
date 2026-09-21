@@ -28,6 +28,11 @@ function doPost(e) {
     if (d.website) return json({ ok: true }); // honeypot: es un bot, lo ignoramos
     if (!d.nombre || !String(d.nombre).trim()) return json({ ok: false, error: 'Falta el nombre' });
 
+    // Evita filas duplicadas si el front reintenta el mismo envío (mismo id)
+    const cache = CacheService.getScriptCache();
+    const dupKey = d.id ? 'rsvp_' + String(d.id).slice(0, 100) : null;
+    if (dupKey && cache.get(dupKey)) return json({ ok: true });
+
     const sheet = getSheet();
     sheet.appendRow([
       new Date(),
@@ -43,6 +48,7 @@ function doPost(e) {
     ]);
     // checkbox solo en la fila nueva (si se pre-cargan, appendRow escribe debajo de todos)
     sheet.getRange(sheet.getLastRow(), 9).insertCheckboxes();
+    if (dupKey) cache.put(dupKey, '1', 21600); // 6 hs, más que suficiente para cualquier reintento
 
     if (NOTIFY_EMAIL) {
       MailApp.sendEmail(
