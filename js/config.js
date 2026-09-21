@@ -43,7 +43,7 @@ window.CONFIG = {
 
   // URL del Web App de Google Apps Script (ver README, paso 2).
   // Si se deja vacío el formulario funciona en MODO DEMO (no guarda nada).
-  scriptUrl: "",
+  scriptUrl: "https://script.google.com/macros/s/AKfycbyD8O7Se89MZn98D8UXrU01tE86Rt9sKk6t7Jr9eMbDDCJp8ix4KwtZmSXQuANY6LQR/exec",
 
   // Tus fotos: están en /img/fotos, listadas acá en orden cronológico.
   // edadNum = edad en años (puede ser fraccionaria) para el edadómetro.
