@@ -14,6 +14,15 @@
     del(k) { try { localStorage.removeItem(k); } catch { /* modo privado */ } },
   };
   const DEBUG = new URLSearchParams(location.search).get("debug") === "1";
+  // Momento en que se cargó la página: el backend rechaza envíos demasiado
+  // rápidos (indica un script, no alguien completando el form a mano).
+  const PAGE_LOADED_AT = Date.now();
+  // Secreto compartido con el backend (ver Code.gs). Sigue siendo JS público
+  // — quien inspeccione el sitio puede leerlo — pero ya filtra a la mayoría
+  // de los scripts/curls que le pegan directo a la URL de Apps Script sin
+  // pasar por acá. Si lo cambiás, actualizá también RSVP_TOKEN en Code.gs
+  // (Propiedades del script) y desplegá una nueva versión.
+  const RSVP_TOKEN = "a0c703ceef862520067dda251db37e301cfe8714bb62be0c";
 
   /* ---------- volcar config en el HTML ---------- */
   const dig = (path) => path.split(".").reduce((o, k) => (o == null ? o : o[k]), C);
@@ -480,6 +489,8 @@
       titular: p.get("titular").trim(),
       transfirio: p.get("transfirio") ? "SI" : "NO",
       website: d.get("website"),
+      token: RSVP_TOKEN,
+      loadedAt: PAGE_LOADED_AT,
     };
     submit(fPago, $("#btn-confirmar"), $("#pago-error"), payload, () => {
       const num = "N° 0025-" + pad(((Math.random() * 99) | 0) + 1) + pad((Math.random() * 100) | 0);
@@ -494,7 +505,14 @@
   fNo.addEventListener("submit", (e) => {
     e.preventDefault();
     const n = new FormData(fNo);
-    const payload = { asiste: "NO", nombre: n.get("nombre").trim(), excusa: n.get("excusa").trim(), website: n.get("website") };
+    const payload = {
+      asiste: "NO",
+      nombre: n.get("nombre").trim(),
+      excusa: n.get("excusa").trim(),
+      website: n.get("website"),
+      token: RSVP_TOKEN,
+      loadedAt: PAGE_LOADED_AT,
+    };
     submit(fNo, $("#btn-no-enviar"), $("#no-error"), payload, () => goto("ok-no"), "no");
   });
 
