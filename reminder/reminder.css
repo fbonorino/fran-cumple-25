@@ -73,6 +73,7 @@ html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 
 /* ---------- lo importante ---------- */
 .r-important { display: grid; gap: 16px; }
+.r-rules ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 6px; }
 
 /* ---------- acciones ---------- */
 .r-buttons { display: grid; gap: 22px; }
@@ -89,6 +90,7 @@ html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 
 @media (min-width: 640px) {
   .r-important { grid-template-columns: 1fr 1fr; }
+  .r-rules { grid-column: 1 / -1; }
 }
 /* dos columnas recién cuando "Cómo llegar" e "Instagram" entran en una fila */
 @media (min-width: 860px) {
