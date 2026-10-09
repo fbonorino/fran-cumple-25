@@ -1,0 +1,96 @@
+/* ============================================================
+   Recordatorio — se apoya en /css/styles.css (tokens, botones,
+   grano, countdown, ticket). Acá solo lo propio de esta página.
+   ============================================================ */
+
+:root { --r-col: 880px; }
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+
+/* ---------- hero ----------
+   El fondo ocupa todo el ancho; el contenido va en la misma columna
+   centrada que las secciones (--r-col), alineado a la izquierda como
+   en la invitación. */
+.r-hero {
+  min-height: 100vh; min-height: 100svh;
+  padding: 0; align-items: stretch; justify-content: stretch;
+}
+.r-hero-inner {
+  position: relative; flex: 1; width: 100%; max-width: var(--r-col); margin: 0 auto;
+  display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 16px;
+  padding: calc(56px + env(safe-area-inset-top)) max(var(--gutter), env(safe-area-inset-right))
+           calc(40px + env(safe-area-inset-bottom)) max(var(--gutter), env(safe-area-inset-left));
+}
+.r-hero .hero-top {
+  top: calc(16px + env(safe-area-inset-top));
+  left: max(var(--gutter), env(safe-area-inset-left));
+  right: max(var(--gutter), env(safe-area-inset-right));
+}
+.r-title { display: block; margin-top: 0; }
+.r-title .hero-row { margin-top: clamp(10px, 3.2vw, 26px); }
+.r-name { display: block; font-size: clamp(5rem, 30vw, 11rem); letter-spacing: -.01em; }
+.r-25 { font-size: clamp(6rem, 34vw, 13rem); }
+.r-greeting {
+  font-family: var(--display); text-transform: uppercase; line-height: 1;
+  font-size: clamp(1.8rem, 8.4vw, 3.4rem); overflow-wrap: anywhere; max-width: 100%;
+}
+.countdown.is-over { font-family: var(--display); text-transform: uppercase; font-size: clamp(1.6rem, 7vw, 2.4rem); color: var(--acid); }
+
+/* ---------- secciones ---------- */
+.r-main { max-width: var(--r-col); margin: 0 auto; }
+.r-section { padding: clamp(44px, 10vw, 80px) var(--gutter) 0; }
+.r-h2 { font-size: clamp(2.4rem, 12vw, 4.4rem); margin-bottom: 20px; }
+.r-section .lead { margin-top: 0; margin-bottom: 20px; }
+
+.card:hover { transform: none; border-color: rgba(245, 238, 218, .14); }
+
+/* ---------- paradas ---------- */
+.r-stops { display: grid; gap: 16px; }
+.r-stop { display: flex; flex-direction: column; gap: 8px; }
+.r-time { font-family: var(--display); font-size: 2.6rem; line-height: 1; color: var(--ink); }
+.r-stop h3 { font-size: 1.5rem; }
+.r-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: auto; padding-top: 10px; }
+.r-actions .btn { flex: 1 1 140px; white-space: nowrap; }
+.r-stop .btn-acid { box-shadow: 4px 4px 0 var(--pink); border-color: var(--acid); }
+
+/* ---------- mapa ---------- */
+.r-map { background: var(--bg-2); border: 1px solid rgba(245, 238, 218, .14); border-radius: 22px; padding: 18px 14px 14px; }
+.r-map svg { display: block; width: 100%; max-width: 380px; height: auto; margin: 0 auto; overflow: visible; }
+.r-map figcaption { text-align: center; margin-top: 8px; font-size: .82rem; letter-spacing: .1em; text-transform: uppercase; }
+
+.m-wall { fill: none; stroke: var(--ink); stroke-width: 3; stroke-linejoin: round; stroke-linecap: round; }
+.m-bar { fill: rgba(245, 238, 218, .06); stroke: var(--muted); stroke-width: 1.5; }
+.m-bar-label { font-family: var(--body); font-weight: 700; font-size: 11px; letter-spacing: .2em; fill: var(--muted); text-anchor: middle; dominant-baseline: middle; }
+.m-zone { fill: rgba(245, 238, 218, .03); stroke: rgba(245, 238, 218, .25); stroke-width: 1.2; stroke-dasharray: 5 5; }
+.m-zone-label { font-family: var(--display); font-size: 26px; letter-spacing: .06em; fill: rgba(245, 238, 218, .45); text-anchor: middle; }
+.m-dj { fill: var(--bg); stroke: var(--ink); stroke-width: 2; }
+.m-dj-label { font-family: var(--display); font-size: 16px; fill: var(--ink); text-anchor: middle; }
+.m-small { font-family: var(--body); font-weight: 700; font-size: 10px; letter-spacing: .18em; fill: var(--muted); text-anchor: middle; }
+.m-dot { fill: var(--acid); stroke: var(--dark); stroke-width: 2; }
+.m-num { font-family: var(--display); font-size: 17px; fill: var(--dark); text-anchor: middle; }
+.m-pulse { fill: var(--acid); opacity: .5; transform-box: fill-box; transform-origin: center; animation: m-pulse 2.2s ease-out infinite; }
+@keyframes m-pulse { from { transform: scale(1); opacity: .5; } to { transform: scale(2); opacity: 0; } }
+.m-arrow { fill: none; stroke: var(--acid); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+
+/* ---------- lo importante ---------- */
+.r-important { display: grid; gap: 16px; }
+
+/* ---------- acciones ---------- */
+.r-buttons { display: grid; gap: 22px; }
+.r-block { display: grid; gap: 12px; }
+.r-wide { width: 100%; }
+.r-buttons .btn-acid { box-shadow: 4px 4px 0 var(--pink); border-color: var(--acid); }
+.r-buttons .btn-pink { box-shadow: 4px 4px 0 var(--acid); border-color: var(--pink); }
+.r-alt { font-size: .88rem; }
+.r-alt a { font-weight: 700; white-space: nowrap; display: inline-block; padding: 12px 2px; }
+.r-menu { display: grid; gap: 10px; animation: stepin .35s var(--ease-out); }
+.r-menu .btn { text-align: center; }
+
+.footer { margin-top: clamp(56px, 12vw, 96px); }
+
+@media (min-width: 640px) {
+  .r-important { grid-template-columns: 1fr 1fr; }
+}
+/* dos columnas recién cuando "Cómo llegar" e "Instagram" entran en una fila */
+@media (min-width: 860px) {
+  .r-stops { grid-template-columns: 1fr 1fr; }
+}

@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#0e0c12">
+  <title>Fran cumple 25 — Recordatorio</title>
+  <meta name="description" content="Sábado 10/10 · Previa 23 hs · Mata 2 hs">
+
+  <meta property="og:title" content="Fran cumple 25 — Recordatorio">
+  <meta property="og:description" content="Sábado 10/10 · Previa 23 hs · Mata 2 hs">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://fran-cumple-25.netlify.app/reminder/">
+  <meta property="og:image" content="https://fran-cumple-25.netlify.app/img/og.jpg">
+
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎂</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Permanent+Marker&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+  <!-- Base visual compartida con la invitación (tokens, botones, grano, countdown, ticket) -->
+  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="/reminder/reminder.css">
+</head>
+<body>
+
+  <div class="grain" aria-hidden="true"></div>
+
+  <!-- ============ HERO ============ -->
+  <header class="hero r-hero">
+    <div class="r-hero-inner">
+      <div class="hero-top"><span>★ Recordatorio ★</span></div>
+
+      <h1 class="hero-title r-title">
+        <span class="r-name">Fran</span>
+        <span class="hero-row">
+          <span class="hero-cumple">cumple</span>
+          <span class="hero-25 r-25">25</span>
+        </span>
+      </h1>
+
+      <p class="r-greeting" id="greeting">Se viene el sábado.</p>
+      <p class="hero-meta">Sábado 10/10</p>
+
+      <div class="countdown" id="countdown" aria-label="Cuenta regresiva a la previa">
+        <div><b id="cd-d">00</b><small>días</small></div>
+        <div><b id="cd-h">00</b><small>horas</small></div>
+        <div><b id="cd-m">00</b><small>min</small></div>
+        <div><b id="cd-s">00</b><small>seg</small></div>
+      </div>
+    </div>
+  </header>
+
+  <main class="r-main">
+
+    <!-- ============ PLAN ============ -->
+    <section class="r-section" aria-labelledby="plan-h">
+      <p class="kicker">Plan de la noche</p>
+      <h2 id="plan-h" class="r-h2">After <em>loading…</em></h2>
+
+      <div class="r-stops">
+        <article class="card r-stop">
+          <p class="r-time">23:00 hs</p>
+          <h3>Previa</h3>
+          <p>Av. Directorio 252, CABA</p>
+          <p class="muted">Sábado 10/10</p>
+          <div class="r-actions">
+            <a class="btn btn-acid" id="maps-previa" target="_blank" rel="noopener">Cómo llegar ↗</a>
+          </div>
+        </article>
+
+        <article class="card r-stop">
+          <p class="r-time">2:00 AM</p>
+          <h3>Mata Club</h3>
+          <p>Av. Rivadavia 13636, Ramos Mejía</p>
+          <p class="muted">Domingo 11/10</p>
+          <div class="r-actions">
+            <a class="btn btn-acid" id="maps-mata" target="_blank" rel="noopener">Cómo llegar ↗</a>
+            <a class="btn btn-ghost" href="https://www.instagram.com/mata_club/" target="_blank" rel="noopener">Instagram ↗</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============ MESA ============ -->
+    <section class="r-section" aria-labelledby="mesa-h">
+      <p class="kicker">En Mata</p>
+      <h2 id="mesa-h" class="r-h2">Mesas <em>15 y 16</em></h2>
+      <p class="lead">Nuestras mesas en Mata: <span>15 y 16, en el backstage</span>.</p>
+
+      <figure class="r-map">
+        <svg viewBox="0 0 320 420" role="img" aria-labelledby="map-title">
+          <title id="map-title">Esquema de Mata Club: las mesas 15 y 16 están a los lados de la cabina del DJ, en el centro del salón, entre la zona VIP y la zona General.</title>
+
+          <!-- sala, con hueco para la entrada abajo al centro -->
+          <path class="m-wall" d="M130 400 H14 V14 H306 V400 H190"/>
+
+          <!-- barras laterales -->
+          <rect class="m-bar" x="24" y="70" width="30" height="270" rx="6"/>
+          <rect class="m-bar" x="266" y="70" width="30" height="270" rx="6"/>
+          <text class="m-bar-label" transform="translate(44 205) rotate(-90)">BARRA</text>
+          <text class="m-bar-label" transform="translate(286 205) rotate(-90)">BARRA</text>
+
+          <!-- zonas -->
+          <rect class="m-zone" x="66" y="26" width="188" height="124" rx="10"/>
+          <text class="m-zone-label" x="160" y="94">VIP</text>
+          <rect class="m-zone" x="66" y="252" width="188" height="120" rx="10"/>
+          <text class="m-zone-label" x="160" y="320">GENERAL</text>
+
+          <!-- cabina DJ (semicírculo) -->
+          <path class="m-dj" d="M126 172 H194 A34 34 0 0 1 126 172 Z"/>
+          <text class="m-dj-label" x="160" y="192">DJ</text>
+          <text class="m-small" x="160" y="166">BACKSTAGE</text>
+
+          <!-- mesas 15 y 16 -->
+          <g class="m-table">
+            <circle class="m-pulse" cx="102" cy="190" r="17"/>
+            <circle class="m-dot" cx="102" cy="190" r="17"/>
+            <text class="m-num" x="102" y="196">15</text>
+          </g>
+          <g class="m-table">
+            <circle class="m-pulse" cx="218" cy="190" r="17"/>
+            <circle class="m-dot" cx="218" cy="190" r="17"/>
+            <text class="m-num" x="218" y="196">16</text>
+          </g>
+
+          <!-- entrada -->
+          <path class="m-arrow" d="M160 414 V386 M152 394 L160 386 L168 394"/>
+          <text class="m-small" x="160" y="383" dy="-4">ENTRADA</text>
+        </svg>
+        <figcaption class="muted">Esquema orientativo</figcaption>
+      </figure>
+    </section>
+
+    <!-- ============ LO IMPORTANTE ============ -->
+    <section class="r-section" aria-labelledby="imp-h">
+      <p class="kicker">Antes de salir</p>
+      <h2 id="imp-h" class="r-h2">Lo <em>importante</em></h2>
+
+      <div class="r-important">
+        <article class="card">
+          <h3>DNI</h3>
+          <p>Tenelo a mano.</p>
+        </article>
+        <article class="card">
+          <h3>La cita</h3>
+          <p>Es en la previa. A las 2:00 nos vamos a Mata.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============ ACCIONES ============ -->
+    <section class="r-section" aria-labelledby="acc-h">
+      <p class="kicker">Para no olvidarte</p>
+      <h2 id="acc-h" class="r-h2">Dejalo <em>listo</em></h2>
+
+      <div class="r-buttons">
+        <div class="r-block">
+          <!-- iOS: link directo al .ics (abre "Agregar a Calendario"). Android/desktop: menú. -->
+          <a class="btn btn-acid btn-big r-wide" id="cal-ios" href="/reminder/fran-cumple-25.ics" hidden>Agregar al calendario</a>
+          <p class="r-alt muted" id="cal-ios-alt" hidden>
+            ¿No se abrió? Agregalo con Google Calendar:
+            <a data-gcal="previa" target="_blank" rel="noopener">Previa ↗</a> ·
+            <a data-gcal="mata" target="_blank" rel="noopener">Mata ↗</a>
+          </p>
+
+          <button class="btn btn-acid btn-big r-wide" id="btn-cal" type="button" aria-expanded="false" aria-controls="cal-opts">Agregar al calendario</button>
+          <div class="r-menu" id="cal-opts" hidden>
+            <a class="btn btn-ghost r-wide" data-gcal="previa" target="_blank" rel="noopener">Google Calendar — Previa</a>
+            <a class="btn btn-ghost r-wide" data-gcal="mata" target="_blank" rel="noopener">Google Calendar — Mata</a>
+            <a class="btn btn-ghost r-wide" href="/reminder/fran-cumple-25.ics" download="fran-cumple-25.ics">Descargar .ics (Apple / Outlook)</a>
+          </div>
+        </div>
+
+        <div class="r-block">
+          <button class="btn btn-pink btn-big r-wide" id="btn-uber" type="button" aria-expanded="false" aria-controls="uber-opts">Pedir Uber</button>
+          <div class="r-menu" id="uber-opts" hidden>
+            <a class="btn btn-ghost r-wide" id="uber-previa" target="_blank" rel="noopener">Ir a la previa</a>
+            <a class="btn btn-ghost r-wide" id="uber-mata" target="_blank" rel="noopener">Ir a Mata</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>Hecho para el cuarto de siglo · Fran, edición 25</p>
+  </footer>
+
+  <script src="/reminder/reminder.js"></script>
+</body>
+</html>
