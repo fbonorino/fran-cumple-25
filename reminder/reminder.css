@@ -1,6 +1,6 @@
 /* ============================================================
    Recordatorio — se apoya en /css/styles.css (tokens, botones,
-   grano, countdown, ticket). Acá solo lo propio de esta página.
+   grano, countdown). Acá solo lo propio de esta página.
    ============================================================ */
 
 :root { --r-col: 880px; }
@@ -82,7 +82,7 @@ html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 .r-buttons .btn-acid { box-shadow: 4px 4px 0 var(--pink); border-color: var(--acid); }
 .r-buttons .btn-pink { box-shadow: 4px 4px 0 var(--acid); border-color: var(--pink); }
 .r-alt { font-size: .88rem; }
-.r-alt a { font-weight: 700; white-space: nowrap; display: inline-block; padding: 12px 2px; }
+.r-alt a { font-weight: 700; display: inline-block; padding: 12px 2px; }
 .r-menu { display: grid; gap: 10px; animation: stepin .35s var(--ease-out); }
 .r-menu .btn { text-align: center; }
 

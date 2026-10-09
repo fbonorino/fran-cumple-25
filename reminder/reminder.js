@@ -9,21 +9,23 @@
 
   // Instantes fijos con offset explícito: no dependen de la zona del dispositivo.
   const PREVIA_AT = new Date("2026-10-10T23:00:00-03:00").getTime();
-  const AR_OFFSET = -3 * 3600e3;
 
-  const PREVIA = {
-    titulo: "Previa — Fran cumple 25",
-    nombre: "Previa",
-    direccion: "Av. Directorio 252, CABA",
-    inicio: "20261011T020000Z", // 23:00 -03 del 10/10
-    fin: "20261011T050000Z",
-  };
-  const MATA = {
-    titulo: "Mata Club — Fran cumple 25",
-    nombre: "Mata Club",
-    direccion: "Av. Rivadavia 13636, Ramos Mejía",
-    inicio: "20261011T050000Z", // 02:00 -03 del 11/10
-    fin: "20261011T100000Z",
+  const PREVIA = { nombre: "Previa", direccion: "Av. Directorio 252, CABA" };
+  const MATA = { nombre: "Mata Club", direccion: "Av. Rivadavia 13636, Ramos Mejía" };
+
+  // Un solo evento para toda la noche (mismos datos que fran-cumple-25.ics).
+  const EVENTO = {
+    titulo: "Fran cumple 25",
+    inicio: "20261011T020000Z", // sáb 10/10 23:00 -03
+    fin: "20261011T100000Z",    // dom 11/10 07:00 -03
+    lugar: "Av. Directorio 252, CABA",
+    detalle: [
+      "Previa 23:00 — Av. Directorio 252, CABA",
+      "1:30 salimos a Mata",
+      "Mata Club 2:00 — Av. Rivadavia 13636, Ramos Mejía",
+      "Mesas 15 y 16 (backstage)",
+      "Llevá DNI.",
+    ].join("\n"),
   };
 
   /* ---------- nombre desde ?n= ---------- */
@@ -39,21 +41,9 @@
     return chars.join("").trim();
   }
 
-  /* ---------- saludo según la fecha en Argentina ---------- */
-  function saludo(nombre) {
-    const ar = new Date(Date.now() + AR_OFFSET); // leer con getUTC* = hora argentina
-    const y = ar.getUTCFullYear(), mo = ar.getUTCMonth() + 1, d = ar.getUTCDate(), h = ar.getUTCHours();
-    const key = y * 10000 + mo * 100 + d;
-    let frase;
-    if (key < 20261009) frase = "el sábado es el día";
-    else if (key === 20261009) frase = "mañana es el día";
-    else if (key === 20261010 || (key === 20261011 && h < 8)) frase = "hoy es el día";
-    else frase = "gracias por venir";
-    if (!nombre) return frase.charAt(0).toUpperCase() + frase.slice(1) + ".";
-    return nombre + ", " + frase + ".";
-  }
-
-  $("#greeting").textContent = saludo(leerNombre());
+  /* ---------- saludo ---------- */
+  const nombre = leerNombre();
+  $("#greeting").textContent = nombre ? nombre + ", te esperamos." : "Te esperamos.";
 
   /* ---------- cuenta regresiva ---------- */
   const cd = $("#countdown");
@@ -87,46 +77,39 @@
   $("#uber-previa").href = uber(PREVIA);
   $("#uber-mata").href = uber(MATA);
 
-  const gcal = (ev) => "https://calendar.google.com/calendar/render?action=TEMPLATE" +
-    "&text=" + encodeURIComponent(ev.titulo) +
-    "&dates=" + ev.inicio + "/" + ev.fin +
-    "&location=" + encodeURIComponent(ev.direccion) +
-    "&details=" + encodeURIComponent("Llevá DNI y la captura de tu entrada.");
-  document.querySelectorAll("[data-gcal]").forEach((a) => {
-    a.href = gcal(a.dataset.gcal === "mata" ? MATA : PREVIA);
-  });
+  const gcal = "https://calendar.google.com/calendar/render?action=TEMPLATE" +
+    "&text=" + encodeURIComponent(EVENTO.titulo) +
+    "&dates=" + EVENTO.inicio + "/" + EVENTO.fin +
+    "&location=" + encodeURIComponent(EVENTO.lugar) +
+    "&details=" + encodeURIComponent(EVENTO.detalle);
 
-  /* ---------- menús desplegables (Uber y calendario) ---------- */
-  const menus = [];
-  function menu(btn, panel) {
-    const set = (abierto) => {
-      panel.hidden = !abierto;
-      btn.setAttribute("aria-expanded", String(abierto));
-    };
-    btn.addEventListener("click", () => {
-      const abrir = panel.hidden;
-      menus.forEach((m) => m(false));
-      set(abrir);
-    });
-    menus.push(set);
-  }
-  menu($("#btn-uber"), $("#uber-opts"));
-  menu($("#btn-cal"), $("#cal-opts"));
+  /* ---------- menú de Uber ---------- */
+  const btnUber = $("#btn-uber");
+  const uberOpts = $("#uber-opts");
+  const setUber = (abierto) => {
+    uberOpts.hidden = !abierto;
+    btnUber.setAttribute("aria-expanded", String(abierto));
+  };
+  btnUber.addEventListener("click", () => setUber(uberOpts.hidden));
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") menus.forEach((m) => m(false));
+    if (e.key === "Escape") setUber(false);
   });
 
   /* ---------- calendario según plataforma ---------- */
-  // iOS: un toque al .ics estático abre la hoja nativa "Agregar a Calendario".
-  // Android y desktop: menú, así nunca se descarga nada sin elegirlo.
+  // iOS: el .ics estático abre la hoja nativa "Agregar a Calendario".
+  // Android y desktop: Google Calendar con el evento precargado; nunca se descarga nada.
   const ua = navigator.userAgent;
   const esIOS = /iPad|iPhone|iPod/.test(ua) ||
     (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
   document.documentElement.dataset.plataforma = esIOS ? "ios" : /Android/.test(ua) ? "android" : "desktop";
+  const btnCal = $("#btn-cal");
   if (esIOS) {
-    $("#btn-cal").hidden = true;
-    $("#cal-opts").hidden = true;
-    $("#cal-ios").hidden = false;
+    btnCal.href = "/reminder/fran-cumple-25.ics";
+    btnCal.removeAttribute("target");
+    btnCal.removeAttribute("rel");
+    $("#cal-ios-gcal").href = gcal;
     $("#cal-ios-alt").hidden = false;
+  } else {
+    btnCal.href = gcal;
   }
 })();

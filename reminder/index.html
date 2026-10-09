@@ -144,7 +144,7 @@
         </article>
         <article class="card">
           <h3>La cita</h3>
-          <p>Es en la previa. A las 2:00 nos vamos a Mata.</p>
+          <p>Es en la previa. A la 1:30 nos vamos a Mata.</p>
         </article>
         <article class="card r-rules">
           <h3>Reglas de la previa</h3>
@@ -164,20 +164,11 @@
 
       <div class="r-buttons">
         <div class="r-block">
-          <!-- iOS: link directo al .ics (abre "Agregar a Calendario"). Android/desktop: menú. -->
-          <a class="btn btn-acid btn-big r-wide" id="cal-ios" href="/reminder/fran-cumple-25.ics" hidden>Agregar al calendario</a>
+          <!-- iOS: link al .ics (abre "Agregar a Calendario"). Android/desktop: Google Calendar. -->
+          <a class="btn btn-acid btn-big r-wide" id="btn-cal" target="_blank" rel="noopener">Agregar al calendario</a>
           <p class="r-alt muted" id="cal-ios-alt" hidden>
-            ¿No se abrió? Agregalo con Google Calendar:
-            <a data-gcal="previa" target="_blank" rel="noopener">Previa ↗</a> ·
-            <a data-gcal="mata" target="_blank" rel="noopener">Mata ↗</a>
+            <a id="cal-ios-gcal" target="_blank" rel="noopener">¿Usás Google Calendar? Agregalo acá ↗</a>
           </p>
-
-          <button class="btn btn-acid btn-big r-wide" id="btn-cal" type="button" aria-expanded="false" aria-controls="cal-opts">Agregar al calendario</button>
-          <div class="r-menu" id="cal-opts" hidden>
-            <a class="btn btn-ghost r-wide" data-gcal="previa" target="_blank" rel="noopener">Google Calendar — Previa</a>
-            <a class="btn btn-ghost r-wide" data-gcal="mata" target="_blank" rel="noopener">Google Calendar — Mata</a>
-            <a class="btn btn-ghost r-wide" href="/reminder/fran-cumple-25.ics" download="fran-cumple-25.ics">Descargar .ics (Apple / Outlook)</a>
-          </div>
         </div>
 
         <div class="r-block">

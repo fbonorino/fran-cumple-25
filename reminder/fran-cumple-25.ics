@@ -4,31 +4,19 @@ PRODID:-//Fran cumple 25//Recordatorio//ES
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 BEGIN:VEVENT
-UID:previa-20261010@fran-cumple-25.netlify.app
+UID:fran-cumple-25-20261010@fran-cumple-25.netlify.app
 DTSTAMP:20261009T120000Z
 DTSTART:20261011T020000Z
-DTEND:20261011T050000Z
-SUMMARY:Previa — Fran cumple 25
-LOCATION:Av. Directorio 252\, CABA
-DESCRIPTION:Llevá DNI y la captura de tu entrada.
-BEGIN:VALARM
-TRIGGER:-PT2H
-ACTION:DISPLAY
-DESCRIPTION:Previa — Fran cumple 25
-END:VALARM
-END:VEVENT
-BEGIN:VEVENT
-UID:mata-20261011@fran-cumple-25.netlify.app
-DTSTAMP:20261009T120000Z
-DTSTART:20261011T050000Z
 DTEND:20261011T100000Z
-SUMMARY:Mata Club — Fran cumple 25
-LOCATION:Av. Rivadavia 13636\, Ramos Mejía
-DESCRIPTION:Llevá DNI y la captura de tu entrada.
+SUMMARY:Fran cumple 25
+LOCATION:Av. Directorio 252\, CABA
+DESCRIPTION:Previa 23:00 — Av. Directorio 252\, CABA\n1:30 salimos a Mata
+ \nMata Club 2:00 — Av. Rivadavia 13636\, Ramos Mejía\nMesas 15 y 16 (ba
+ ckstage)\nLlevá DNI.
 BEGIN:VALARM
 TRIGGER:-PT2H
 ACTION:DISPLAY
-DESCRIPTION:Mata Club — Fran cumple 25
+DESCRIPTION:Fran cumple 25
 END:VALARM
 END:VEVENT
 END:VCALENDAR
